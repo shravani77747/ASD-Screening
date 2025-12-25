@@ -190,56 +190,8 @@ elif st.session_state.step == 3:
     st.markdown(f"<div class='advice'>{guidance}</div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # ==================================================
-    # ✅ FIXED PDF GENERATION (NO OVERFLOW)
-    # ==================================================
-    buffer = io.BytesIO()
 
-    doc = SimpleDocTemplate(
-        buffer,
-        pagesize=A4,
-        rightMargin=40,
-        leftMargin=40,
-        topMargin=50,
-        bottomMargin=40
-    )
-
-    styles = getSampleStyleSheet()
-    story = []
-
-    story.append(Paragraph(
-        "<b>Autism Spectrum Disorder Screening Report</b>",
-        styles["Title"]
-    ))
-    story.append(Spacer(1, 0.3 * inch))
-
-    story.append(Paragraph(f"<b>Name:</b> {st.session_state.child_name}", styles["Normal"]))
-    story.append(Paragraph(f"<b>Date:</b> {datetime.now().strftime('%d-%m-%Y')}", styles["Normal"]))
-    story.append(Spacer(1, 0.15 * inch))
-
-    story.append(Paragraph(f"<b>Age:</b> {st.session_state.age}", styles["Normal"]))
-    story.append(Paragraph(f"<b>Gender:</b> {st.session_state.gender}", styles["Normal"]))
-    story.append(Spacer(1, 0.2 * inch))
-
-    story.append(Paragraph(f"<b>Result:</b> {result_text}", styles["Normal"]))
-    story.append(Paragraph(f"<b>Probability:</b> {probability:.2f}%", styles["Normal"]))
-    story.append(Paragraph(f"<b>Severity Level:</b> {severity}", styles["Normal"]))
-    story.append(Spacer(1, 0.25 * inch))
-
-    story.append(Paragraph("<b>Guidance:</b>", styles["Normal"]))
-    story.append(Spacer(1, 0.1 * inch))
-    story.append(Paragraph(guidance, styles["Normal"]))
-
-    doc.build(story)
-    buffer.seek(0)
-
-    st.download_button(
-        "📄 Download PDF Report",
-        buffer,
-        "ASD_Screening_Report.pdf",
-        "application/pdf"
-    )
-
+   
     # ---------- SAFE RESTART ----------
     if st.button("🔁 Restart Screening"):
         st.session_state.clear()
